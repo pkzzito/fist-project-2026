@@ -7,6 +7,6 @@ public class load : MonoBehaviour
    
     public void Load()
     {
-        SceneManager.LoadScene(sceneName);
+        GameManager.Instance.Load();
     }
 }

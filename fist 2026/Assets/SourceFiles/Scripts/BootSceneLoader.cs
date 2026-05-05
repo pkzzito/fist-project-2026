@@ -44,5 +44,15 @@ public class BootSequence : MonoBehaviour
         
         Destroy(gameObject);
     }
+    
+    void Start()
+    {
+        LoadSplash();
+    }
+
+    void LoadSplash()
+    {
+        SceneManager.LoadScene("SplashManager");
+    }
 }
 
