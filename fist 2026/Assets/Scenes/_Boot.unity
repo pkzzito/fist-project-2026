@@ -290,6 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0587435d0cdff44cbddfbffb4103377, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  sceneName: menu
   currentState: 0
 --- !u!4 &1435134940
 Transform:

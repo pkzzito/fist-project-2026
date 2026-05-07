@@ -1,19 +1,31 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public string sceneName;
 
-    public GameStates.GameState currentState;
+    public enum GameState
+    {
+        Iniciando,
+        MenuPrincipal,
+        Gameplay
+    }
+
+    public GameState currentState;
 
     private void Awake()
     {
-        // Singleton (só existe um GameManager)
+        // Singleton
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // não destrói ao trocar de cena
+            DontDestroyOnLoad(gameObject);
+
+            // Escuta quando a cena muda
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
@@ -21,19 +33,52 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetState(GameStates.GameState newState)
+    private void Start()
+    {
+        SetState(GameState.Iniciando);
+        LoadScene("SplashManager");
+    }
+
+    // Chamado automaticamente quando uma cena carrega
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("Cena carregada: " + scene.name);
+
+        if (scene.name == "SplashManager")
+        {
+            SetState(GameState.Iniciando);
+        }
+        else if (scene.name == "menu")
+        {
+            SetState(GameState.MenuPrincipal);
+        }
+        else if (scene.name == "GetStarted_Scene")
+        {
+            SetState(GameState.Gameplay);
+        }
+    }
+
+    public void SetState(GameState newState)
     {
         currentState = newState;
-        Debug.Log("Novo estado: " + currentState);
+        Debug.Log("Estado atual: " + currentState);
     }
-    
-    void CarregarMenu()
-    {
-        SceneManager.LoadScene("menu");
-    }
-    
-    public void Load(string sceneName)
+
+    // Controle de cenas (SÓ o GameManager pode fazer isso)
+    public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
+
+    // Input allocation (simples)
+    public void SetupPlayerInput(PlayerInput playerInput)
+    {
+        Debug.Log("Input atribuído ao jogador: " + playerInput.name);
+    }
+    
+    public void Load()
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+    
 }

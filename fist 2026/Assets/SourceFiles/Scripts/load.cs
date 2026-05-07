@@ -7,6 +7,15 @@ public class load : MonoBehaviour
    
     public void Load()
     {
-        GameManager.Instance.Load();
+        GameManager.Instance.LoadScene(sceneName);
+    }
+
+    // Função para o botão "Sair"
+    public void QuitGame()
+    {
+        Debug.Log("saiu do jogo");
+
+        // Fecha o jogo (só funciona no build)
+        Application.Quit();
     }
 }
