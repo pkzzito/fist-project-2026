@@ -1562,6 +1562,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0.20002048
       objectReference: {fileID: 0}
+    - target: {fileID: 7477988938871578672, guid: 332df604d1fc7fd46ae4013ce9b4a5d6, type: 3}
+      propertyPath: m_Actions
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 3705c94f5163e504b84c99a2eb8c65fc, type: 3}
+    - target: {fileID: 7477988938871578672, guid: 332df604d1fc7fd46ae4013ce9b4a5d6, type: 3}
+      propertyPath: m_DefaultActionMap
+      value: GamePlay
+      objectReference: {fileID: 0}
+    - target: {fileID: 7477988938871578672, guid: 332df604d1fc7fd46ae4013ce9b4a5d6, type: 3}
+      propertyPath: m_NotificationBehavior
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7736108665850884707, guid: 332df604d1fc7fd46ae4013ce9b4a5d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10

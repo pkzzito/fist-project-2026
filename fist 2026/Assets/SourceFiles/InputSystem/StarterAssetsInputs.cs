@@ -20,34 +20,11 @@ namespace StarterAssets
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
 
+		//private playerInput playerinput; 
+
 
 
 #if ENABLE_INPUT_SYSTEM
-		
-
-		
-		public void OnMove(InputValue value)
-		{
-			MoveInput(value.Get<Vector2>());
-		}
-
-		public void OnLook(InputValue value)
-		{
-			if(cursorInputForLook)
-			{
-				LookInput(value.Get<Vector2>());
-			}
-		}
-
-		public void OnJump(InputValue value)
-		{
-			JumpInput(value.isPressed);
-		}
-
-		public void OnSprint(InputValue value)
-		{
-			SprintInput(value.isPressed);
-		}
 #endif
 
 			private void Awake()
@@ -57,6 +34,12 @@ namespace StarterAssets
 
 		
 	}
+
+	/*private void Start()
+	{
+		PlayerInput = GetComponet<playerinput>();
+		
+	} */
 
 		public void MoveInput(Vector2 newMoveDirection)
 		{
