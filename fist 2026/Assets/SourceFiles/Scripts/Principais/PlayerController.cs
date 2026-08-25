@@ -7,24 +7,31 @@ public class PlayerController : MonoBehaviour
     public float speedIncrease = 0.5f;
 
     private Vector2 moveInput;
+    private Rigidbody rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Vector3 movement = new Vector3(
             moveInput.x,
-            0,
+            0f,
             moveInput.y
         );
 
-        transform.Translate(
-            movement * speed * Time.deltaTime,
-            Space.World
-        );
+        Vector3 newPosition =
+            rb.position +
+            movement * speed * Time.fixedDeltaTime;
+
+        rb.MovePosition(newPosition);
     }
 
     public void IncreaseSpeed()
