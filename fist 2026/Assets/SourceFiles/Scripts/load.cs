@@ -7,7 +7,7 @@ public class load : MonoBehaviour
    
     public void Load()
     {
-        GameManager.Instance.LoadScene(sceneName);
+        GameManager.Instance.LoadGameplay();
     }
 
     // Função para o botão "Sair"

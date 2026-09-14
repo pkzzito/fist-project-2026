@@ -2,14 +2,12 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    private void Start()
-    {
-        Debug.Log("Coin.cs funcionando!");
-    }
+    private bool coletada = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Moeda tocada por: " + other.gameObject.name);
+        if (coletada)
+            return;
 
         PlayerController player =
             other.GetComponentInParent<PlayerController>();
@@ -19,19 +17,28 @@ public class Coin : MonoBehaviour
 
         if (player != null && score != null)
         {
-            Debug.Log("Jogador encontrado: " + score.playerNumber);
+            coletada = true;
 
+            // Desliga o collider
+            Collider collider = GetComponent<Collider>();
+
+            if (collider != null)
+                collider.enabled = false;
+
+            // Desliga a imagem da moeda
+            Renderer renderer = GetComponent<Renderer>();
+
+            if (renderer != null)
+                renderer.enabled = false;
+
+            // Dá o ponto
             score.AddCoin();
+
+            // Aumenta a velocidade
             player.IncreaseSpeed();
 
+            // Destrói a moeda
             Destroy(gameObject);
-        }
-        else
-        {
-            Debug.LogWarning(
-                "Não encontrei PlayerController ou PlayerScore em " +
-                other.gameObject.name
-            );
         }
     }
 }

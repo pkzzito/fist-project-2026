@@ -6,39 +6,67 @@ public class ScoreUI : MonoBehaviour
     [Header("Textos da UI")]
     public TMP_Text p1Text;
     public TMP_Text p2Text;
+    public TMP_Text winnerText;
 
-    [Header("Jogadores")]
-    public PlayerScore player1;
-    public PlayerScore player2;
+    [Header("Configuração da vitória")]
+    public int moedasParaVencer = 3;
 
-    private void Start()
+    private PlayerScore player1;
+    private PlayerScore player2;
+
+    private bool jogoTerminado = false;
+
+    private void Update()
     {
-        // Atualiza a UI inicialmente
-        AtualizarP1(player1.coins);
-        AtualizarP2(player2.coins);
+        // Procurar os jogadores
+        if (player1 == null || player2 == null)
+        {
+            PlayerScore[] players =
+                FindObjectsByType<PlayerScore>(FindObjectsSortMode.None);
 
-        // Escuta quando a pontuação mudar
-        player1.OnCoinsChanged += AtualizarP1;
-        player2.OnCoinsChanged += AtualizarP2;
-    }
+            foreach (PlayerScore player in players)
+            {
+                if (player.playerNumber == 1)
+                    player1 = player;
 
-    private void OnDestroy()
-    {
-        // Remove os eventos quando a UI for destruída
+                if (player.playerNumber == 2)
+                    player2 = player;
+            }
+        }
+
+        // Atualizar contador do P1
         if (player1 != null)
-            player1.OnCoinsChanged -= AtualizarP1;
+        {
+            p1Text.text = "P1: " + player1.coins;
 
+            if (!jogoTerminado && player1.coins >= moedasParaVencer)
+            {
+                MostrarVencedor(1);
+            }
+        }
+
+        // Atualizar contador do P2
         if (player2 != null)
-            player2.OnCoinsChanged -= AtualizarP2;
+        {
+            p2Text.text = "P2: " + player2.coins;
+
+            if (!jogoTerminado && player2.coins >= moedasParaVencer)
+            {
+                MostrarVencedor(2);
+            }
+        }
     }
 
-    private void AtualizarP1(int coins)
+    private void MostrarVencedor(int jogador)
     {
-        p1Text.text = "P1: " + coins;
-    }
+        jogoTerminado = true;
 
-    private void AtualizarP2(int coins)
-    {
-        p2Text.text = "P2: " + coins;
+        winnerText.text =
+            "PARABÉNS! JOGADOR " + jogador + " GANHOU!!!";
+
+        Debug.Log(
+            "JOGADOR " + jogador +
+            " GANHOU A PARTIDA!"
+        );
     }
 }
