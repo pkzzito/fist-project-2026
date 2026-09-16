@@ -19,25 +19,29 @@ public class Coin : MonoBehaviour
         {
             coletada = true;
 
-            // Desliga o collider
-            Collider collider = GetComponent<Collider>();
+            // Desativa o collider imediatamente
+            Collider coinCollider = GetComponent<Collider>();
 
-            if (collider != null)
-                collider.enabled = false;
+            if (coinCollider != null)
+                coinCollider.enabled = false;
 
-            // Desliga a imagem da moeda
-            Renderer renderer = GetComponent<Renderer>();
-
-            if (renderer != null)
-                renderer.enabled = false;
-
-            // Dá o ponto
+            // Adiciona a moeda ao contador
             score.AddCoin();
 
-            // Aumenta a velocidade
+            // AUMENTA A VELOCIDADE
             player.IncreaseSpeed();
 
-            // Destrói a moeda
+            Debug.Log(
+                "Moeda coletada! Nova velocidade: " +
+                player.speed
+            );
+
+            // Faz a moeda desaparecer
+            Renderer coinRenderer = GetComponent<Renderer>();
+
+            if (coinRenderer != null)
+                coinRenderer.enabled = false;
+
             Destroy(gameObject);
         }
     }

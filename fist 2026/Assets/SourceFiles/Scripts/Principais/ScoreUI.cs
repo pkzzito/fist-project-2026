@@ -8,9 +8,6 @@ public class ScoreUI : MonoBehaviour
     public TMP_Text p2Text;
     public TMP_Text winnerText;
 
-    [Header("Configuração da vitória")]
-    public int moedasParaVencer = 3;
-
     private PlayerScore player1;
     private PlayerScore player2;
 
@@ -22,7 +19,9 @@ public class ScoreUI : MonoBehaviour
         if (player1 == null || player2 == null)
         {
             PlayerScore[] players =
-                FindObjectsByType<PlayerScore>(FindObjectsSortMode.None);
+                FindObjectsByType<PlayerScore>(
+                    FindObjectsSortMode.None
+                );
 
             foreach (PlayerScore player in players)
             {
@@ -34,39 +33,42 @@ public class ScoreUI : MonoBehaviour
             }
         }
 
-        // Atualizar contador do P1
+        // CONTINUA MOSTRANDO AS MOEDAS
         if (player1 != null)
         {
             p1Text.text = "P1: " + player1.coins;
-
-            if (!jogoTerminado && player1.coins >= moedasParaVencer)
-            {
-                MostrarVencedor(1);
-            }
         }
 
-        // Atualizar contador do P2
         if (player2 != null)
         {
             p2Text.text = "P2: " + player2.coins;
-
-            if (!jogoTerminado && player2.coins >= moedasParaVencer)
-            {
-                MostrarVencedor(2);
-            }
         }
     }
 
-    private void MostrarVencedor(int jogador)
+    public void MostrarResultado()
     {
+        if (jogoTerminado)
+            return;
+
+        if (player1 == null || player2 == null)
+            return;
+
         jogoTerminado = true;
 
-        winnerText.text =
-            "PARABÉNS! JOGADOR " + jogador + " GANHOU!!!";
-
-        Debug.Log(
-            "JOGADOR " + jogador +
-            " GANHOU A PARTIDA!"
-        );
+        if (player1.stars > player2.stars)
+        {
+            winnerText.text =
+                "PARABÉNS! JOGADOR 1 GANHOU!!!";
+        }
+        else if (player2.stars > player1.stars)
+        {
+            winnerText.text =
+                "PARABÉNS! JOGADOR 2 GANHOU!!!";
+        }
+        else
+        {
+            winnerText.text =
+                "EMPATE!";
+        }
     }
 }

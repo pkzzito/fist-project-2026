@@ -23,7 +23,6 @@ public class PlayerScore : MonoBehaviour
             " pegou uma moeda. Total: " + coins
         );
 
-        // Avisa todos os interessados que a quantidade mudou
         OnCoinsChanged?.Invoke(coins);
     }
 

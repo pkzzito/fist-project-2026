@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
         moveInput = value.Get<Vector2>();
     }
 
-    // NOVO: recebe o comando de pulo
+    // Comando de pulo
     public void OnJump(InputValue value)
     {
         if (value.isPressed && isGrounded)
@@ -82,6 +82,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Aumenta a velocidade quando pega uma moeda
     public void IncreaseSpeed()
     {
         speed += speedIncrease;
