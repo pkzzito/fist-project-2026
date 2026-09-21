@@ -4,7 +4,9 @@ public class GameManagerStars : MonoBehaviour
 {
     public static GameManagerStars Instance;
 
-    private int totalEstrelas;
+    [Header("Configuração da partida")]
+    public int totalEstrelas = 6;
+
     private int estrelasColetadas;
 
     private void Awake()
@@ -14,18 +16,19 @@ public class GameManagerStars : MonoBehaviour
 
     private void Start()
     {
-        // Conta quantas estrelas existem na cena
-        totalEstrelas =
-            FindObjectsByType<Pickup>(FindObjectsSortMode.None).Length;
+        estrelasColetadas = 0;
 
-        Debug.Log(
-            "Total de estrelas na fase: " +
-            totalEstrelas
-        );
+        Debug.Log("=================================");
+        Debug.Log("TOTAL DE ESTRELAS DA FASE: " + totalEstrelas);
+        Debug.Log("=================================");
     }
 
     public void EstrelaColetada()
     {
+        // Impede que passe de 6
+        if (estrelasColetadas >= totalEstrelas)
+            return;
+
         estrelasColetadas++;
 
         Debug.Log(
@@ -35,6 +38,7 @@ public class GameManagerStars : MonoBehaviour
             totalEstrelas
         );
 
+        // Quando as 6 estrelas forem coletadas
         if (estrelasColetadas >= totalEstrelas)
         {
             FinalizarPartida();
@@ -43,7 +47,7 @@ public class GameManagerStars : MonoBehaviour
 
     private void FinalizarPartida()
     {
-        Debug.Log("TODAS AS ESTRELAS FORAM COLETADAS!");
+        Debug.Log("TODAS AS 6 ESTRELAS FORAM COLETADAS!");
 
         ScoreUI scoreUI =
             FindFirstObjectByType<ScoreUI>();
@@ -51,6 +55,12 @@ public class GameManagerStars : MonoBehaviour
         if (scoreUI != null)
         {
             scoreUI.MostrarResultado();
+        }
+        else
+        {
+            Debug.LogError(
+                "ScoreUI não foi encontrado na cena!"
+            );
         }
     }
 }

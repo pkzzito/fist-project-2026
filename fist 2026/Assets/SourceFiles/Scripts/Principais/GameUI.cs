@@ -8,16 +8,15 @@ public class GameUI : MonoBehaviour
     public TextMeshProUGUI player2Coins;
     public TextMeshProUGUI winnerText;
 
-    [Header("Configuração da vitória")]
-    public int moedasParaVencer = 3;
-
     private PlayerScore player1;
     private PlayerScore player2;
 
     private void Start()
     {
+        // Não mostra vencedor no início
         winnerText.text = "";
 
+        // Procura os jogadores
         PlayerScore[] players =
             FindObjectsByType<PlayerScore>(FindObjectsSortMode.None);
 
@@ -33,12 +32,14 @@ public class GameUI : MonoBehaviour
             }
         }
 
+        // Configura P1
         if (player1 != null)
         {
             player1.OnCoinsChanged += UpdatePlayer1Coins;
             UpdatePlayer1Coins(player1.coins);
         }
 
+        // Configura P2
         if (player2 != null)
         {
             player2.OnCoinsChanged += UpdatePlayer2Coins;
@@ -49,21 +50,11 @@ public class GameUI : MonoBehaviour
     private void UpdatePlayer1Coins(int amount)
     {
         player1Coins.text = "P1: " + amount;
-
-        if (amount >= moedasParaVencer)
-        {
-            winnerText.text = "PARABÉNS! JOGADOR 1 GANHOU!!!";
-        }
     }
 
     private void UpdatePlayer2Coins(int amount)
     {
         player2Coins.text = "P2: " + amount;
-
-        if (amount >= moedasParaVencer)
-        {
-            winnerText.text = "PARABÉNS! JOGADOR 2 GANHOU!!!";
-        }
     }
 
     public void ShowWinner()
@@ -73,11 +64,11 @@ public class GameUI : MonoBehaviour
 
         if (player1.stars > player2.stars)
         {
-            winnerText.text = "JOGADOR 1 VENCEU!";
+            winnerText.text = "PARABÉNS! JOGADOR 1 GANHOU!!!";
         }
         else if (player2.stars > player1.stars)
         {
-            winnerText.text = "JOGADOR 2 VENCEU!";
+            winnerText.text = "PARABÉNS! JOGADOR 2 GANHOU!!!";
         }
         else
         {

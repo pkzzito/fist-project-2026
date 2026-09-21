@@ -13,36 +13,56 @@ public class ScoreUI : MonoBehaviour
 
     private bool jogoTerminado = false;
 
-    private void Update()
+    private void Start()
     {
-        // Procurar os jogadores
-        if (player1 == null || player2 == null)
+        // Procura os jogadores
+        PlayerScore[] players =
+            FindObjectsByType<PlayerScore>(FindObjectsSortMode.None);
+
+        foreach (PlayerScore player in players)
         {
-            PlayerScore[] players =
-                FindObjectsByType<PlayerScore>(
-                    FindObjectsSortMode.None
-                );
+            if (player.playerNumber == 1)
+                player1 = player;
 
-            foreach (PlayerScore player in players)
-            {
-                if (player.playerNumber == 1)
-                    player1 = player;
-
-                if (player.playerNumber == 2)
-                    player2 = player;
-            }
+            if (player.playerNumber == 2)
+                player2 = player;
         }
 
-        // CONTINUA MOSTRANDO AS MOEDAS
+        // Configura a pontuação inicial
         if (player1 != null)
         {
             p1Text.text = "P1: " + player1.coins;
+            player1.OnCoinsChanged += AtualizarP1;
         }
 
         if (player2 != null)
         {
             p2Text.text = "P2: " + player2.coins;
+            player2.OnCoinsChanged += AtualizarP2;
         }
+
+        // Esconde o texto de vencedor no início
+        if (winnerText != null)
+            winnerText.text = "";
+    }
+
+    private void OnDestroy()
+    {
+        if (player1 != null)
+            player1.OnCoinsChanged -= AtualizarP1;
+
+        if (player2 != null)
+            player2.OnCoinsChanged -= AtualizarP2;
+    }
+
+    private void AtualizarP1(int coins)
+    {
+        p1Text.text = "P1: " + coins;
+    }
+
+    private void AtualizarP2(int coins)
+    {
+        p2Text.text = "P2: " + coins;
     }
 
     public void MostrarResultado()
@@ -67,8 +87,7 @@ public class ScoreUI : MonoBehaviour
         }
         else
         {
-            winnerText.text =
-                "EMPATE!";
+            winnerText.text = "EMPATE!";
         }
     }
 }
