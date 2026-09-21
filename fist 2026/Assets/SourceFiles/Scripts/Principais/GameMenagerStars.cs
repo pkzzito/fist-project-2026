@@ -8,6 +8,7 @@ public class GameManagerStars : MonoBehaviour
     public int totalEstrelas = 6;
 
     private int estrelasColetadas;
+    private bool partidaFinalizada = false;
 
     private void Awake()
     {
@@ -19,14 +20,15 @@ public class GameManagerStars : MonoBehaviour
         estrelasColetadas = 0;
 
         Debug.Log("=================================");
-        Debug.Log("TOTAL DE ESTRELAS DA FASE: " + totalEstrelas);
+        Debug.Log("TOTAL DE ESTRELAS: " + totalEstrelas);
+        Debug.Log("MAIORIA NECESSÁRIA: " + (totalEstrelas / 2 + 1));
         Debug.Log("=================================");
     }
 
     public void EstrelaColetada()
     {
-        // Impede que passe de 6
-        if (estrelasColetadas >= totalEstrelas)
+        // Se a partida já terminou, não faz mais nada
+        if (partidaFinalizada)
             return;
 
         estrelasColetadas++;
@@ -38,7 +40,50 @@ public class GameManagerStars : MonoBehaviour
             totalEstrelas
         );
 
-        // Quando as 6 estrelas forem coletadas
+        VerificarVencedor();
+    }
+
+    private void VerificarVencedor()
+    {
+        PlayerScore[] players =
+            FindObjectsByType<PlayerScore>(FindObjectsSortMode.None);
+
+        PlayerScore player1 = null;
+        PlayerScore player2 = null;
+
+        foreach (PlayerScore player in players)
+        {
+            if (player.playerNumber == 1)
+                player1 = player;
+
+            else if (player.playerNumber == 2)
+                player2 = player;
+        }
+
+        if (player1 == null || player2 == null)
+        {
+            Debug.LogError("Não foi possível encontrar os dois jogadores!");
+            return;
+        }
+
+        // Calcula quantas estrelas são necessárias para ter maioria
+        int maioria = totalEstrelas / 2 + 1;
+
+        // Jogador 1 conseguiu a maioria
+        if (player1.stars >= maioria)
+        {
+            FinalizarPartida();
+            return;
+        }
+
+        // Jogador 2 conseguiu a maioria
+        if (player2.stars >= maioria)
+        {
+            FinalizarPartida();
+            return;
+        }
+
+        // Se todas as estrelas foram coletadas e ninguém teve maioria
         if (estrelasColetadas >= totalEstrelas)
         {
             FinalizarPartida();
@@ -47,7 +92,12 @@ public class GameManagerStars : MonoBehaviour
 
     private void FinalizarPartida()
     {
-        Debug.Log("TODAS AS 6 ESTRELAS FORAM COLETADAS!");
+        if (partidaFinalizada)
+            return;
+
+        partidaFinalizada = true;
+
+        Debug.Log("PARTIDA FINALIZADA!");
 
         ScoreUI scoreUI =
             FindFirstObjectByType<ScoreUI>();

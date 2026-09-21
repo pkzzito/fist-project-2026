@@ -28,17 +28,22 @@ public class ScoreUI : MonoBehaviour
                 player2 = player;
         }
 
-        // Configura a pontuação inicial
+        // Configura P1
         if (player1 != null)
         {
-            p1Text.text = "P1: " + player1.coins;
-            player1.OnCoinsChanged += AtualizarP1;
+            AtualizarP1();
+
+            player1.OnCoinsChanged += AtualizarP1Coins;
+            player1.OnStarsChanged += AtualizarP1Stars;
         }
 
+        // Configura P2
         if (player2 != null)
         {
-            p2Text.text = "P2: " + player2.coins;
-            player2.OnCoinsChanged += AtualizarP2;
+            AtualizarP2();
+
+            player2.OnCoinsChanged += AtualizarP2Coins;
+            player2.OnStarsChanged += AtualizarP2Stars;
         }
 
         // Esconde o texto de vencedor no início
@@ -49,21 +54,69 @@ public class ScoreUI : MonoBehaviour
     private void OnDestroy()
     {
         if (player1 != null)
-            player1.OnCoinsChanged -= AtualizarP1;
+        {
+            player1.OnCoinsChanged -= AtualizarP1Coins;
+            player1.OnStarsChanged -= AtualizarP1Stars;
+        }
 
         if (player2 != null)
-            player2.OnCoinsChanged -= AtualizarP2;
+        {
+            player2.OnCoinsChanged -= AtualizarP2Coins;
+            player2.OnStarsChanged -= AtualizarP2Stars;
+        }
     }
 
-    private void AtualizarP1(int coins)
+    // =========================
+    // ATUALIZAÇÃO DO P1
+    // =========================
+
+    private void AtualizarP1()
     {
-        p1Text.text = "P1: " + coins;
+        p1Text.text =
+            "P1: " +
+            player1.coins +
+            " moedas | " +
+            player1.stars +
+            " estrelas";
     }
 
-    private void AtualizarP2(int coins)
+    private void AtualizarP1Coins(int coins)
     {
-        p2Text.text = "P2: " + coins;
+        AtualizarP1();
     }
+
+    private void AtualizarP1Stars(int stars)
+    {
+        AtualizarP1();
+    }
+
+    // =========================
+    // ATUALIZAÇÃO DO P2
+    // =========================
+
+    private void AtualizarP2()
+    {
+        p2Text.text =
+            "P2: " +
+            player2.coins +
+            " moedas | " +
+            player2.stars +
+            " estrelas";
+    }
+
+    private void AtualizarP2Coins(int coins)
+    {
+        AtualizarP2();
+    }
+
+    private void AtualizarP2Stars(int stars)
+    {
+        AtualizarP2();
+    }
+
+    // =========================
+    // RESULTADO
+    // =========================
 
     public void MostrarResultado()
     {
